@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bạn đã sẵn sàng chưa?</title>
+<title>Are You Ready?</title>
 
 <style>
 * {
@@ -21,7 +21,7 @@ html, body {
 body {
     min-height: 100vh;
     background:
-        radial-gradient(circle at center, #252525 0%, #090909 45%, #000000 100%);
+        radial-gradient(circle, #1c1c1c 0%, #050505 45%, #000 100%);
     color: white;
     font-family: Georgia, "Times New Roman", serif;
 
@@ -29,10 +29,10 @@ body {
     justify-content: center;
     align-items: center;
 
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-/* Hiệu ứng nhiễu */
+/* Nhiễu màn hình */
 body::before {
     content: "";
     position: fixed;
@@ -48,61 +48,69 @@ body::before {
         );
 
     pointer-events: none;
-    z-index: 10;
+    z-index: 100;
 }
 
-/* Khung chính */
+/* Vignette */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    box-shadow:
+        inset 0 0 180px #000,
+        inset 0 0 350px #000;
+
+    pointer-events: none;
+    z-index: 99;
+}
+
 .container {
     width: 92%;
-    max-width: 800px;
+    max-width: 900px;
 
     text-align: center;
 
-    animation: appear 2s ease;
+    position: relative;
+    z-index: 5;
 }
 
-/* Tiêu đề */
 .question {
-    font-size: clamp(28px, 6vw, 60px);
+    font-size: clamp(28px, 6vw, 64px);
 
-    letter-spacing: 5px;
-
-    text-transform: uppercase;
+    letter-spacing: 6px;
 
     text-shadow:
         0 0 5px white,
         0 0 15px #777,
-        0 0 35px #333;
+        0 0 35px #444;
 
     animation: flicker 3s infinite;
 }
 
-/* Dòng nhỏ */
 .subtitle {
     margin-top: 18px;
 
-    color: #777;
+    color: #666;
 
-    font-size: 13px;
+    font-size: 12px;
 
-    letter-spacing: 3px;
+    letter-spacing: 4px;
 }
 
-/* Hai nút */
 .buttons {
     margin-top: 45px;
 
     display: flex;
-
     justify-content: center;
 
     gap: 20px;
 }
 
 button {
-    width: 130px;
+    width: 135px;
 
-    padding: 15px 20px;
+    padding: 15px;
 
     background: transparent;
 
@@ -110,7 +118,7 @@ button {
 
     border: 1px solid #777;
 
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Georgia, serif;
 
     font-size: 17px;
 
@@ -118,11 +126,7 @@ button {
 
     cursor: pointer;
 
-    transition:
-        background 0.4s,
-        color 0.4s,
-        box-shadow 0.4s,
-        transform 0.4s;
+    transition: 0.4s;
 }
 
 button:hover {
@@ -132,71 +136,120 @@ button:hover {
 
     box-shadow: 0 0 30px white;
 
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 button:active {
     transform: scale(0.95);
 }
 
+/* Đếm ngược */
+.countdown {
+    display: none;
+
+    font-size: clamp(80px, 20vw, 180px);
+
+    font-weight: bold;
+
+    letter-spacing: 10px;
+
+    text-shadow:
+        0 0 10px white,
+        0 0 30px #aaa,
+        0 0 70px #444;
+
+    animation: countdownAnim 1s ease;
+}
+
 /* Video */
 .video-box {
     display: none;
 
-    margin-top: 40px;
+    position: fixed;
 
-    animation: videoAppear 2s ease;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: #000;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 50;
+
+    animation: videoAppear 1.5s ease;
 }
 
 video {
-    display: block;
+    width: 100vw;
+    height: 100vh;
 
-    width: 100%;
-
-    max-height: 80vh;
+    object-fit: contain;
 
     background: black;
-
-    border: 1px solid #555;
-
-    box-shadow:
-        0 0 20px rgba(255,255,255,0.12),
-        0 0 70px rgba(0,0,0,0.9);
 }
 
-/* Dòng dưới video */
-.back-text {
-    margin-top: 15px;
+/* Chớp màn hình */
+.flash {
+    display: none;
 
-    color: #555;
+    position: fixed;
 
-    font-size: 12px;
+    inset: 0;
 
-    letter-spacing: 3px;
+    background: white;
+
+    z-index: 200;
+
+    animation: flashEffect 0.15s ease;
 }
 
-/* Hiệu ứng xuất hiện */
-@keyframes appear {
+/* Rung */
+.shake {
+    animation: shake 0.12s infinite;
+}
 
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
 
-    to {
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes flicker {
+
+    0%, 18%, 22%, 63%, 64%, 65%, 100% {
         opacity: 1;
-        transform: translateY(0);
+    }
+
+    19%, 21%, 62% {
+        opacity: 0.45;
     }
 
 }
 
-/* Hiệu ứng video */
+@keyframes countdownAnim {
+
+    0% {
+        opacity: 0;
+        transform: scale(2);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+
+}
+
 @keyframes videoAppear {
 
     from {
         opacity: 0;
-        transform: scale(0.90);
-        filter: blur(10px);
+        transform: scale(1.15);
+        filter: blur(15px);
     }
 
     to {
@@ -207,112 +260,153 @@ video {
 
 }
 
-/* Nhấp nháy chữ */
-@keyframes flicker {
+@keyframes flashEffect {
 
-    0%,
-    18%,
-    22%,
-    63%,
-    64%,
-    65%,
-    100% {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
         opacity: 1;
     }
 
-    19%,
-    21%,
-    62% {
-        opacity: 0.5;
+    100% {
+        opacity: 0;
     }
 
 }
 
+@keyframes shake {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(5px, -4px);
+    }
+
+    50% {
+        transform: translate(-5px, 4px);
+    }
+
+    75% {
+        transform: translate(4px, 5px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+
+}
+
+
 /* Điện thoại */
+
 @media (max-width: 600px) {
 
     .question {
         font-size: 30px;
-
         letter-spacing: 3px;
     }
 
     .subtitle {
-        font-size: 11px;
-
+        font-size: 10px;
         letter-spacing: 2px;
     }
 
     .buttons {
         gap: 12px;
-
-        margin-top: 35px;
     }
 
     button {
         width: 120px;
-
-        padding: 14px 10px;
     }
 
 }
 </style>
 </head>
 
+
 <body>
 
-<div class="container">
+<div class="flash" id="flash"></div>
+
+
+<div class="container" id="container">
 
     <!-- Câu hỏi -->
-    <div class="question">
+
+    <div class="question" id="question">
         BẠN ĐÃ SẴN SÀNG CHƯA?
     </div>
 
-    <!-- Dòng phụ -->
-    <div class="subtitle">
+    <div class="subtitle" id="subtitle">
         SOME THINGS ARE BETTER LEFT UNKNOWN
     </div>
 
-    <!-- Nút -->
-    <div class="buttons">
 
-        <button onclick="showVideo()">
+    <!-- Nút -->
+
+    <div class="buttons" id="buttons">
+
+        <button onclick="startExperience()">
             YES
         </button>
 
-        <button onclick="showVideo()">
+        <button onclick="startExperience()">
             NO
         </button>
 
     </div>
 
-    <!-- Video -->
-    <div class="video-box" id="videoBox">
 
-        <video
-            id="myVideo"
-            controls
-            playsinline
-            preload="auto">
+    <!-- Đếm ngược -->
 
-            <source src="video.mp4" type="video/mp4">
-
-            Trình duyệt của bạn không hỗ trợ video.
-
-        </video>
-
-        <div class="back-text">
-            YOU WERE WARNED.
-        </div>
-
+    <div class="countdown" id="countdown">
+        3
     </div>
+
+</div>
+
+
+<!-- Video -->
+
+<div class="video-box" id="videoBox">
+
+    <video
+        id="myVideo"
+        controls
+        playsinline
+        preload="auto">
+
+        <source src="video.mp4" type="video/mp4">
+
+        Trình duyệt của bạn không hỗ trợ video.
+
+    </video>
 
 </div>
 
 
 <script>
 
-function showVideo() {
+function startExperience() {
+
+    const question =
+        document.getElementById("question");
+
+    const subtitle =
+        document.getElementById("subtitle");
+
+    const buttons =
+        document.getElementById("buttons");
+
+    const countdown =
+        document.getElementById("countdown");
+
+    const container =
+        document.getElementById("container");
 
     const videoBox =
         document.getElementById("videoBox");
@@ -320,48 +414,91 @@ function showVideo() {
     const video =
         document.getElementById("myVideo");
 
-
-    /* Hiện video */
-
-    videoBox.style.display = "block";
+    const flash =
+        document.getElementById("flash");
 
 
-    /*
-        Cố gắng phát video.
-        Vì người dùng vừa bấm YES/NO
-        nên trình duyệt thường cho phép.
-    */
+    /* Ẩn giao diện */
 
-    video.play().catch(function(error) {
+    question.style.display = "none";
 
-        console.log("Không thể tự phát:", error);
+    subtitle.style.display = "none";
 
-    });
+    buttons.style.display = "none";
 
 
-    /*
-        Chuyển video sang fullscreen.
-    */
+    /* Hiện số 3 */
 
-    if (video.requestFullscreen) {
+    countdown.style.display = "block";
 
-        video.requestFullscreen().catch(function(error) {
+    countdown.innerText = "3";
 
-            console.log("Fullscreen bị trình duyệt chặn:", error);
 
-        });
+    setTimeout(() => {
 
-    }
+        countdown.innerText = "2";
 
-    /*
-        Hỗ trợ một số trình duyệt Safari/iPhone.
-    */
+    }, 1000);
 
-    else if (video.webkitEnterFullscreen) {
 
-        video.webkitEnterFullscreen();
+    setTimeout(() => {
 
-    }
+        countdown.innerText = "1";
+
+    }, 2000);
+
+
+    setTimeout(() => {
+
+        countdown.innerText = "0";
+
+        container.classList.add("shake");
+
+
+        /* Chớp màn hình */
+
+        flash.style.display = "block";
+
+
+        setTimeout(() => {
+
+            flash.style.display = "none";
+
+        }, 150);
+
+
+    }, 3000);
+
+
+    /* Sau đếm ngược mở video */
+
+    setTimeout(() => {
+
+        container.style.display = "none";
+
+        videoBox.style.display = "flex";
+
+
+        /* Phát video */
+
+        video.play().catch(() => {});
+
+
+        /* Fullscreen */
+
+        if (video.requestFullscreen) {
+
+            video.requestFullscreen().catch(() => {});
+
+        }
+
+        else if (video.webkitEnterFullscreen) {
+
+            video.webkitEnterFullscreen();
+
+        }
+
+    }, 3200);
 
 }
 
