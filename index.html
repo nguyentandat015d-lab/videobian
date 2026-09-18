@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bạn đã sẵn sàng chưa?</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at center, #242424 0%, #080808 45%, #000 100%);
+    color: white;
+    font-family: Georgia, "Times New Roman", serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.02) 0px,
+            rgba(255,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+    pointer-events: none;
+}
+
+.container {
+    width: 92%;
+    max-width: 750px;
+    text-align: center;
+    animation: appear 2s ease;
+}
+
+.question {
+    font-size: clamp(28px, 6vw, 58px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 15px #777,
+        0 0 35px #333;
+    animation: flicker 3s infinite;
+}
+
+.subtitle {
+    margin-top: 15px;
+    color: #888;
+    font-size: 14px;
+    letter-spacing: 3px;
+}
+
+.buttons {
+    margin-top: 45px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    width: 130px;
+    padding: 15px 20px;
+    background: transparent;
+    color: white;
+    border: 1px solid #777;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+button:hover {
+    background: white;
+    color: black;
+    box-shadow: 0 0 25px white;
+}
+
+.video-box {
+    display: none;
+    margin-top: 40px;
+    animation: videoAppear 2s ease;
+}
+
+video {
+    width: 100%;
+    max-height: 75vh;
+    border: 1px solid #555;
+    box-shadow:
+        0 0 20px rgba(255,255,255,0.12),
+        0 0 70px rgba(0,0,0,0.9);
+    background: black;
+}
+
+.back-text {
+    margin-top: 15px;
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes videoAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+        filter: blur(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes flicker {
+    0%, 18%, 22%, 63%, 64%, 65%, 100% {
+        opacity: 1;
+    }
+
+    19%, 21%, 62% {
+        opacity: 0.55;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="question">
+        BẠN ĐÃ SẴN SÀNG CHƯA?
+    </div>
+
+    <div class="subtitle">
+        SOME THINGS ARE BETTER LEFT UNKNOWN
+    </div>
+
+    <div class="buttons">
+
+        <button onclick="showVideo()">
+            YES
+        </button>
+
+        <button onclick="showVideo()">
+            NO
+        </button>
+
+    </div>
+
+    <div class="video-box" id="videoBox">
+
+        <video controls playsinline>
+            <source src="video.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
+
+        <div class="back-text">
+            YOU WERE WARNED.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function showVideo() {
+
+    const videoBox = document.getElementById("videoBox");
+
+    videoBox.style.display = "block";
+
+    setTimeout(() => {
+
+        videoBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }, 100);
+
+}
+
+</script>
+
+</body>
+</html>
